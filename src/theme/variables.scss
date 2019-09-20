@@ -91,6 +91,14 @@
   --ion-color-jetgram-tab-bar-shade: #3768da;
   --ion-color-jetgram-tab-bar-tint: #5284f9;
 
+  /* jetgram-buttoms*/
+  --ion-color-jetgram-buttoms: #3626fd;
+  --ion-color-jetgram-buttoms-rgb: 54,38,253;
+  --ion-color-jetgram-buttoms-contrast: #ffffff;
+  --ion-color-jetgram-buttoms-contrast-rgb: 255,255,255;
+  --ion-color-jetgram-buttoms-shade: #3021df;
+  --ion-color-jetgram-buttoms-tint: #4a3cfd;
+
 }
 
 .ion-color-jetgram-header {
@@ -109,4 +117,12 @@
   --ion-color-contrast-rgb: var(--ion-color-jetgram-tab-bar-contrast-rgb);
   --ion-color-shade: var(--ion-color-jetgram-tab-bar-shade);
   --ion-color-tint: var(--ion-color-jetgram-tab-bar-tint);
+}
+.ion-color-jetgram-buttoms {
+  --ion-color-base: var(--ion-color-jetgram-buttoms);
+  --ion-color-base-rgb: var(--ion-color-jetgram-buttoms-rgb);
+  --ion-color-contrast: var(--ion-color-jetgram-buttoms-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-jetgram-buttoms-contrast-rgb);
+  --ion-color-shade: var(--ion-color-jetgram-buttoms-shade);
+  --ion-color-tint: var(--ion-color-jetgram-buttoms-tint);
 }
