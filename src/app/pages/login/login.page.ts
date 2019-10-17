@@ -4,6 +4,8 @@ import {IonSlides, LoadingController, NavController} from '@ionic/angular';
 import {UserService} from '../../services/user.service';
 import {AlertsService} from '../../services/alerts.service';
 import {JetUser} from '../../intefaces/interfaces';
+import {LoadingService} from '../../services/loading.service';
+import {log} from 'util';
 
 @Component({
     selector: 'app-login',
@@ -12,6 +14,8 @@ import {JetUser} from '../../intefaces/interfaces';
 })
 export class LoginPage implements OnInit {
     @ViewChild('slidePrincipal', {static: true}) slides: IonSlides;
+
+
     avatarSlide = {
         slidesPerView: 3.5
     };
@@ -30,13 +34,11 @@ export class LoginPage implements OnInit {
     constructor(private userService: UserService,
                 private alertsService: AlertsService,
                 private navCtrl: NavController,
-                private loadingController: LoadingController) {
-        console.log('construcLogin');
+                private loadingService: LoadingService) {
     }
 
     async ngOnInit() {
         await this.slides.lockSwipes(true);
-        console.log('init');
     }
 
     async login(fLogin: NgForm) {
@@ -44,13 +46,18 @@ export class LoginPage implements OnInit {
             await this.alertsService.alertInformativa('Hay campos vacíos');
             return;
         }
+        await this.loadingService.startLoading('Espere por favor');
+
         const valid = await this.userService.login(this.loginUser.email, this.loginUser.password);
+
+
         if (valid) {
-            this.navCtrl.navigateRoot('/main/tabs/tab1', {animated: true});
-            this.alertsService.toastAlert('Bienvenido');
+            await this.navCtrl.navigateRoot('/main/tabs/tab1', {animated: true});
+            await this.alertsService.toastAlert('Bienvenido');
         } else {
             await this.alertsService.alertInformativa('Usuario/contraseña no validas');
         }
+        await this.loadingService.stopLoading();
     }
 
     async registro(fRegistro: NgForm) {
@@ -58,13 +65,15 @@ export class LoginPage implements OnInit {
             await this.alertsService.alertInformativa('Debes llenar todos los campos');
             return;
         }
+        await this.loadingService.startLoading('Espere por favor');
         try {
-            await this.userService.singnup(this.registerUser);
-            this.navCtrl.navigateRoot('/main/tabs/tab1', {animated: true});
-            this.alertsService.toastAlert('Bienvenido');
+            await this.userService.singUp(this.registerUser);
+            await this.navCtrl.navigateRoot('/main/tabs/tab1', {animated: true});
+            await this.alertsService.toastAlert('Bienvenido');
         } catch (e) {
             await this.alertsService.alertInformativa(e.message);
         }
+        await this.loadingService.stopLoading();
     }
 
 

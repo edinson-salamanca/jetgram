@@ -54,16 +54,14 @@ export class AvatarSelectorComponent implements OnInit {
 
     ngOnInit() {
         this.avatars.forEach(avatar => avatar.seleccionado = false);
-
         for (const avatar of this.avatars) {
             if (avatar.img === this.avatarActual) {
                 avatar.seleccionado = true;
-                console.log('entro');
                 break;
             }
+
         }
     }
-
     seleccionarAvatar(avatar) {
         this.avatars.forEach(av => av.seleccionado = false);
         avatar.seleccionado = true;

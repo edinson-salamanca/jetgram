@@ -1,3 +1,26 @@
-<p>
-  post works!
-</p>
+<div class="post">
+
+    <ion-item lines="none">
+        {{indexDebug + 1}}
+        <ion-avatar slot="start">
+            <img src="/assets/avatars/{{post.user.avatar}}">
+        </ion-avatar>
+        <ion-label>
+            <h3>{{post.user.name}}</h3>
+            <h5>{{post.user.email}}</h5>
+        </ion-label>
+    </ion-item>
+
+    <ion-slides>
+        <ion-slide class="img-slide">
+            <img src="/assets/avatars/{{post.imgs[0]}}" alt="">
+        </ion-slide>
+    </ion-slides>
+
+    <ion-item lines="none">
+        <ion-label class="ion-text-wrap">
+            {{post.message}}
+        </ion-label>
+    </ion-item>
+
+</div>

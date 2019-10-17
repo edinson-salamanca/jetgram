@@ -1,5 +1,7 @@
 {
   "name": "jetgram",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

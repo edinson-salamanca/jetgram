@@ -13,6 +13,8 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
+import {AngularFireStorageModule} from '@angular/fire/storage';
+import {AngularFireDatabaseModule} from '@angular/fire/database';
 
 @NgModule({
     declarations: [AppComponent],
@@ -24,7 +26,10 @@ import {AngularFirestoreModule} from '@angular/fire/firestore';
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AngularFirestoreModule,
         AngularFireAuthModule,
-        AngularFirestoreModule],
+        AngularFirestoreModule,
+        AngularFireStorageModule,
+        AngularFireDatabaseModule
+    ],
     providers: [
         StatusBar,
         SplashScreen,
