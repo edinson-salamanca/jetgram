@@ -5,7 +5,7 @@ import {UserService} from '../../services/user.service';
 import {AlertsService} from '../../services/alerts.service';
 import {JetUser} from '../../intefaces/interfaces';
 import {LoadingService} from '../../services/loading.service';
-import {log} from 'util';
+
 
 @Component({
     selector: 'app-login',
@@ -43,7 +43,7 @@ export class LoginPage implements OnInit {
 
     async login(fLogin: NgForm) {
         if (fLogin.invalid) {
-            await this.alertsService.alertInformativa('Hay campos vacíos');
+            await this.alertsService.alertInformative('Hay campos vacíos');
             return;
         }
         await this.loadingService.startLoading('Espere por favor');
@@ -55,14 +55,15 @@ export class LoginPage implements OnInit {
             await this.navCtrl.navigateRoot('/main/tabs/tab1', {animated: true});
             await this.alertsService.toastAlert('Bienvenido');
         } else {
-            await this.alertsService.alertInformativa('Usuario/contraseña no validas');
+            await this.alertsService.alertInformative('Usuario/contraseña no validas');
         }
         await this.loadingService.stopLoading();
     }
 
     async registro(fRegistro: NgForm) {
+
         if (fRegistro.invalid) {
-            await this.alertsService.alertInformativa('Debes llenar todos los campos');
+            await this.alertsService.alertInformative('Debes llenar todos los campos');
             return;
         }
         await this.loadingService.startLoading('Espere por favor');
@@ -71,7 +72,7 @@ export class LoginPage implements OnInit {
             await this.navCtrl.navigateRoot('/main/tabs/tab1', {animated: true});
             await this.alertsService.toastAlert('Bienvenido');
         } catch (e) {
-            await this.alertsService.alertInformativa(e.message);
+            await this.alertsService.alertInformative(e.message);
         }
         await this.loadingService.stopLoading();
     }

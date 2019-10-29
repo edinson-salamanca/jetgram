@@ -12,6 +12,9 @@ export class UsuarioGuard implements CanLoad {
     }
 
     canLoad(): Observable<boolean> | Promise<boolean> | boolean {
-        return this.userService.userValid();
+        const valid = this.userService.userValid().then(resp => {
+            return resp;
+        });
+        return valid;
     }
 }

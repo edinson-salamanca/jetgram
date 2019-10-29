@@ -1,23 +1,25 @@
-import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { UsuarioGuard } from './guards/usuario.guard';
+import {NgModule} from '@angular/core';
+import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
+import {UsuarioGuard} from './guards/usuario.guard';
 
 const routes: Routes = [
     {
         path: 'main',
         loadChildren: './pages/tabs/tabs.module#TabsPageModule',
-        // () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule),
 
         canLoad: [UsuarioGuard]
     },
     {
         path: 'login',
         loadChildren: './pages/login/login.module#LoginPageModule'
-        /** () => import('./pages/login/login.module.js').then(m => m.LoginPageModule) */
-
     },
     {
         path: '',
+        pathMatch: 'full',
+        redirectTo: 'main/tabs/tab1',
+    },
+    {
+        path: '*',
         pathMatch: 'full',
         redirectTo: 'main/tabs/tab1',
     }
@@ -25,7 +27,7 @@ const routes: Routes = [
 
 @NgModule({
     imports: [
-        RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+        RouterModule.forRoot(routes, {preloadingStrategy: PreloadAllModules})
     ],
     exports: [RouterModule]
 })

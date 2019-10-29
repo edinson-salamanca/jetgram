@@ -3,9 +3,9 @@ import {NgForm} from '@angular/forms';
 import {UserService} from '../../services/user.service';
 
 import {JetUser} from '../../intefaces/interfaces';
-import {LoadingService} from '../../services/loading.service';
+
 import {Observable} from 'rxjs';
-import {User} from 'firebase';
+
 
 @Component({
     selector: 'app-tab3',
@@ -40,7 +40,7 @@ export class Tab3Page implements OnInit {
         console.log('update', valid);
     }
 
-    async logout() {
-        await this.userService.logout();
+    logout() {
+        this.userService.logout();
     }
 }

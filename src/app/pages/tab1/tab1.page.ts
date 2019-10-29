@@ -64,16 +64,13 @@ export class Tab1Page implements OnInit {
       .subscribe(posts => {
         console.log('POSTNEXT:', posts);
 
-        if (event) {
-          this.data.push(...posts);
-          event.target.complete();
+        this.data.push(...posts);
+        event.target.complete();
 
-          if (posts.length === 0) {
-            this.enabled = false;
-          }
-        } else {
-          this.data = [];
+        if (posts.length === 0) {
+          this.enabled = false;
         }
+
         this.nexPost.unsubscribe();
       });
   }

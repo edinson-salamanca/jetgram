@@ -1,15 +1,11 @@
-<ion-header no-border>
+<ion-header no-border translucent>
     <ion-toolbar color="jetgram-header">
         <ion-title class="ion-text-center" color="light">
             <h1>JetGram</h1>
         </ion-title>
-        <ion-icon name="camera" slot="start" size="large">
-        </ion-icon>
+        <ion-icon name="camera" slot="start" size="large"></ion-icon>
     </ion-toolbar>
 </ion-header>
-
-
-
 
 <ion-content *ngIf="!data[0]">
     ningun post disponible
@@ -17,41 +13,45 @@
 </ion-content>
 
 <ion-content *ngIf="data[0]" color="light">
-    <ion-refresher slot="fixed" (ionRefresh)="recargar( $event )">
+    <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
     <app-posts [posts]="data"></app-posts>
     <!--<div>
-        <ion-card *ngFor="let post of data" class="post ion-no-margin">
-            <ion-card-header>
-                <ion-item lines="none">
-                    <ion-avatar slot="start">
-                        <img src="/assets/avatars/{{post.user.avatar}}">
-                    </ion-avatar>
-                    <ion-label>
-                        <h3>{{post.user.name}}</h3>
-                        <h3>{{post.user.email}}</h3>
-                    </ion-label>
-                </ion-item>
-            </ion-card-header>
-            <img [src]="post.imgs[0]">
-            <ion-card-content>
+          <ion-card *ngFor="let post of data" class="post ion-no-margin">
+              <ion-card-header>
+                  <ion-item lines="none">
+                      <ion-avatar slot="start">
+                          <img src="/assets/avatars/{{post.user.avatar}}">
+                      </ion-avatar>
+                      <ion-label>
+                          <h3>{{post.user.name}}</h3>
+                          <h3>{{post.user.email}}</h3>
+                      </ion-label>
+                  </ion-item>
+              </ion-card-header>
+              <img [src]="post.imgs[0]">
+              <ion-card-content>
 
-                <ion-item lines="none">
-                    <ion-icon slot="start" size="large" name="heart-empty" color="danger"></ion-icon>
-                </ion-item>
+                  <ion-item lines="none">
+                      <ion-icon slot="start" size="large" name="heart-empty" color="danger"></ion-icon>
+                  </ion-item>
 
-                <ion-item lines="none">
-                    <ion-label class="ion-text-wrap">
-                        {{post.message}}
-                    </ion-label>
-                </ion-item>
-            </ion-card-content>
-        </ion-card>
-    </div>-->
+                  <ion-item lines="none">
+                      <ion-label class="ion-text-wrap">
+                          {{post.message}}
+                      </ion-label>
+                  </ion-item>
+              </ion-card-content>
+          </ion-card>
+      </div>-->
     <!--Infinite Scroll-->
-    <ion-infinite-scroll [disabled]="!enabled" threshold="150px" (ionInfinite)="nextPost($event)">
-        <ion-infinite-scroll-content>
-        </ion-infinite-scroll-content>
+    <ion-infinite-scroll
+            [disabled]="!enabled"
+            threshold="150px"
+            (ionInfinite)="nextPost($event)">
+
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+
     </ion-infinite-scroll>
 </ion-content>

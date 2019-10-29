@@ -1,38 +1,58 @@
-<ion-header>
-  <ion-toolbar color="jetgram-header">
-    <ion-title class="ion-text-left">
-      <h3>Nuevo post</h3>
-    </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="createPost()">
-        <ion-icon name="share" mode="md"></ion-icon>
-        Compartir
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+<ion-header no-border translucent >
+    <ion-toolbar color="jetgram-header">
+        <ion-title class="ion-text-left">
+            <h3>Nuevo post</h3>
+        </ion-title>
+
+        <ion-buttons slot="end">
+            <ion-button (click)="createPost()">
+                <ion-icon name="share" mode="md"></ion-icon>
+                Compartir
+            </ion-button>
+        </ion-buttons>
+
+    </ion-toolbar>
 </ion-header>
 
 <ion-content fullscreen>
-  <ion-item>
-    <ion-label position="floating">Mensaje</ion-label>
-    <ion-textarea [(ngModel)]="post.message"></ion-textarea>
-  </ion-item>
+    <ion-item>
+        <ion-label position="floating">Mensaje</ion-label>
+        <ion-textarea [(ngModel)]="post.message"></ion-textarea>
+    </ion-item>
 
-  <ion-grid>
-    <ion-row>
-      <ion-col size="6">
-        <ion-button expand="full" shape="round">
-          <ion-icon slot="start" name="camera"></ion-icon>
-          Cámara
-          <ion-input type="file"></ion-input>
-        </ion-button>
-      </ion-col>
-      <ion-col size="6">
-        <ion-button expand="full" shape="round">
-          <ion-icon slot="start" name="images"></ion-icon>
-          Galería
-        </ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+    <ion-grid>
+        <ion-row>
+
+            <ion-col size="6">
+
+                <ion-button expand="full"
+                            shape="round"
+                            (click)="takePhoto()">
+                    <ion-icon slot="start" name="camera"></ion-icon>
+                    Cámara
+                </ion-button>
+
+            </ion-col>
+
+            <ion-col size="6">
+
+                <ion-button expand="full"
+                            shape="round"
+                            (click)="libreria()">
+                    <ion-icon slot="start" name="images"></ion-icon>
+                    Galería
+                </ion-button>
+
+            </ion-col>
+
+        </ion-row>
+        <ion-row>
+            <ion-col size="3" *ngFor="let image of tempImages">
+                <ion-card>
+                    <img [src]="image">
+                </ion-card>
+            </ion-col>
+        </ion-row>
+
+    </ion-grid>
 </ion-content>

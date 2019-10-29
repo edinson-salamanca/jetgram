@@ -8,13 +8,13 @@
     <ion-col>
         <ion-slides [options]="avatarSlide">
             <ion-slide *ngFor="let avatar of avatars">
-                <h3 lines="none">
+                <ion-item lines="none">
                     <ion-img class="pick-avatar"
                              src="/assets/avatars/{{ avatar.img }}"
                              [ngClass]="{ 'pick-avatar-seleccionado': avatar.seleccionado }"
                              (click)="seleccionarAvatar( avatar )">
                     </ion-img>
-                </h3>
+                </ion-item>
             </ion-slide>
         </ion-slides>
     </ion-col>

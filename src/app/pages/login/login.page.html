@@ -63,8 +63,7 @@
             <ion-grid fixed>
 
                 <!-- Avatar Selector -->
-                <app-avatar-selector (avatarSel)="registerUser.avatar = $event"
-                                     avatarActual="av-1.png">
+                <app-avatar-selector (avatarSel)="registerUser.avatar = $event">
                 </app-avatar-selector>
 
                 <form (ngSubmit)="registro( fRegistro )" #fRegistro="ngForm">
