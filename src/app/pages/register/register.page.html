@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>register</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-slide>
+  <ion-grid fixed>
+    <app-avatar-selector
+      (avatarSel)="registerUser.avatar = $event"
+    ></app-avatar-selector>
+    <form (submit)="registerUser(fRegistro)" #fRegistro="ngForm">
+      <ion-row>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Email</ion-label>
+              <ion-input
+                name="email"
+                type="email"
+                [(ngModel)]="registUser.email"
+                clear-input
+                required
+              >
+              </ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Nombre</ion-label>
+              <ion-input
+                name="name"
+                type="text"
+                [(ngModel)]="registUser.name"
+                clear-input
+                required
+              ></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Password</ion-label>
+              <ion-input
+                name="password"
+                type="password"
+                [(ngModel)]="registUser.password"
+              ></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-grid>
+</ion-slide>

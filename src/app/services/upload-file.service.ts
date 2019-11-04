@@ -23,27 +23,23 @@ export class UploadFileService {
   uploadImage(img: Blob) {
     const id = new Date().getTime();
 
-    this.ref = this.storage.ref('posts/images').child(`${id}`);
+    this.ref = this.storage.ref('posts/images').child(`${id}.jpeg`);
     this.task = this.ref.put(img);
 
-    this.uploadState = this.task.snapshotChanges().pipe(map(s => s.state));
-
     this.uploadProgress = this.task.percentageChanges();
-
-    this.downloadURL = this.task
-      .snapshotChanges()
-      .pipe(map(snaphot => snaphot.ref.getDownloadURL()));
   }
 
   getUploadProgress() {
     return this.uploadProgress;
   }
 
-  getUploadSta() {
-    return this.uploadState.subscribe(state => state);
+  getUploadState() {
+    return this.task.task.on('state_changed', snapshot => {
+      console.log('state: ', snapshot.state);
+    });
   }
 
-  getDownloadURL() {
-    return this.downloadURL.pipe(map(url => url));
+  async getDownloadURL() {
+    return await this.task.task.snapshot.ref.getDownloadURL();
   }
 }

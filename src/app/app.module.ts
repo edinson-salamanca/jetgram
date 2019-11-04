@@ -21,6 +21,7 @@ import {AngularFireModule} from '@angular/fire';
 /** ionic native */
 import {Camera} from '@ionic-native/camera/ngx';
 import {WebView} from '@ionic-native/ionic-webview/ngx';
+import {File} from '@ionic-native/file/ngx';
 
 @NgModule({
     declarations: [AppComponent],
@@ -42,6 +43,7 @@ import {WebView} from '@ionic-native/ionic-webview/ngx';
         SplashScreen,
         Camera,
         WebView,
+        File,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
     ],
     bootstrap: [AppComponent]

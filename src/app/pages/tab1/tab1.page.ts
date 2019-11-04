@@ -36,9 +36,8 @@ export class Tab1Page implements OnInit {
   }
 
   ngOnInit() {
-    console.log('init');
-
     this.getPosts();
+
     /*escucha emit de newPost*/
     this.postService.newPost.subscribe(post => {
       // this.data.unshift(post);
@@ -53,17 +52,10 @@ export class Tab1Page implements OnInit {
 
   nextPost(event?, pull: boolean = false) {
     /* this.postService.getPostNext(this.data); */
-    this.postService.getPostNext(...this.data).pipe(
-      map(posts => {
-        console.log('resp', posts);
-      })
-    );
 
     this.nexPost = this.postService
       .getPostNext(...this.data)
       .subscribe(posts => {
-        console.log('POSTNEXT:', posts);
-
         this.data.push(...posts);
         event.target.complete();
 

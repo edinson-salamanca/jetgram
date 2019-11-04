@@ -1,40 +1,54 @@
-import {Component} from '@angular/core';
-import {JetPost} from '../../intefaces/interfaces';
-import {UserService} from '../../services/user.service';
-import {PostsService} from '../../services/posts.service';
-import {Router} from '@angular/router';
-import {AlertsService} from '../../services/alerts.service';
+import { Component } from '@angular/core';
+import { JetPost, JetTempImg } from '../../intefaces/interfaces';
+import { UserService } from '../../services/user.service';
+
+import { PostsService } from '../../services/posts.service';
+import { UploadFileService } from '../../services/upload-file.service';
+
+import { Router } from '@angular/router';
+import { AlertsService } from '../../services/alerts.service';
+import { File } from '@ionic-native/file/ngx';
+
 import * as moment from 'moment';
 
-import {Camera, CameraOptions} from '@ionic-native/camera/ngx';
-import {WebView} from '@ionic-native/ionic-webview/ngx';
-
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { Platform } from '@ionic/angular';
+import { map } from 'rxjs/operators';
 
 @Component({
-    selector: 'app-tab2',
-    templateUrl: 'tab2.page.html',
-    styleUrls: ['tab2.page.scss']
+  selector: 'app-tab2',
+  templateUrl: 'tab2.page.html',
+  styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
-    post: JetPost = {};
-    tempImages: string[] = [];
+  post: JetPost = {};
 
-    constructor(
-        private userService: UserService,
-        private postService: PostsService,
-        private route: Router,
-        private alertService: AlertsService,
-        private camera: Camera,
-        private webView: WebView
-    ) {
-    }
+  tempImages: Array<JetTempImg> = [];
+  data: string[] = [];
 
-    createPost() {
-        this.post.created_at = moment().format('MMDDYYYYHHmmss');
-        this.post.imgs = ['av-3.png'];
-        this.post.coords = '';
+  private images: Blob[] = [];
 
-        this.userService.getUser().subscribe(user => {
+  constructor(
+    private userService: UserService,
+    private postService: PostsService,
+    private uploadFileService: UploadFileService,
+    private route: Router,
+    private alertService: AlertsService,
+    private camera: Camera,
+    private webView: WebView,
+    private platform: Platform,
+    private file: File
+  ) {}
+
+  createPost() {
+    this.post.created_at = moment().format('MMDDYYYYHHmmss');
+
+    this.post.coords = '';
+
+    this.uploadImage();
+    this.userService.getUser();
+    /* this.userService.getUser().subscribe(user => {
             this.post.user = {
                 id: user.uid,
                 email: user.email,
@@ -54,41 +68,107 @@ export class Tab2Page {
                 created_at: '',
                 coords: ''
             };
+        }); */
+  }
+  uploadImage() {
+    const promises: Array<Promise<any>> = [];
+
+    this.images.forEach((img, index) => {
+      promises.push(
+        new Promise(resolve => {
+          this.uploadFileService.uploadImage(img);
+
+          const progress = this.uploadFileService
+            .getUploadProgress()
+            .subscribe(resp => {
+              this.tempImages[index].progress = resp;
+
+              this.uploadFileService.getUploadProgress();
+
+              if (resp === 100) {
+                this.tempImages[index].upload = true;
+                resolve(this.uploadFileService.getDownloadURL());
+                progress.remove(progress);
+              }
+            });
+        })
+      );
+    });
+    /* ejecutar promsesas del arreglo promises */
+    Promise.all(promises)
+      .then(resp => {
+        resp.forEach(url => {
+          this.post.imgs.push(url);
         });
+
+        console.log(this.post);
+      })
+      .catch(err => {
+        console.log('errorPromises: ', err);
+      });
+  }
+
+  takePhoto() {
+    const options: CameraOptions = {
+      quality: 60,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      correctOrientation: true,
+      sourceType: this.camera.PictureSourceType.CAMERA
+    };
+    this.processImage(options, true);
+  }
+
+  library() {
+    const options: CameraOptions = {
+      quality: 60,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
+      correctOrientation: true,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
+    };
+    this.processImage(options);
+  }
+
+  async processImage(options: CameraOptions, camera = false) {
+    const imageData: string = await this.camera.getPicture(options);
+
+    this.addTempImagen(imageData);
+
+    let file: string;
+
+    if (this.platform.is('ios')) {
+      file = imageData.split('/').pop();
+    } else {
+      if (camera) {
+        file = imageData.substring(imageData.lastIndexOf('/') + 1);
+      } else {
+        file = imageData.substring(
+          imageData.lastIndexOf('/') + 1,
+          imageData.indexOf('?')
+        );
+      }
     }
 
-    takePhoto() {
-        const options: CameraOptions = {
-            quality: 60,
-            destinationType: this.camera.DestinationType.FILE_URI,
-            encodingType: this.camera.EncodingType.JPEG,
-            mediaType: this.camera.MediaType.PICTURE,
-            correctOrientation: true,
-            sourceType: this.camera.PictureSourceType.CAMERA
-        };
-        this.processImage(options);
-    }
+    const path = imageData.substring(0, imageData.lastIndexOf('/'));
 
-    libreria() {
-        const options: CameraOptions = {
-            quality: 60,
-            destinationType: this.camera.DestinationType.FILE_URI,
-            encodingType: this.camera.EncodingType.JPEG,
-            correctOrientation: true,
-            sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
-        };
-        this.processImage(options);
-    }
+    const buffer: ArrayBuffer = await this.file.readAsArrayBuffer(path, file);
 
-    processImage(options: CameraOptions) {
-        this.camera.getPicture(options).then((imageData) => {
+    /*const blob: Blob[] = [];
+        blob.push(new Blob([buffer], {type: 'image/jpeg'}));*/
+    /* this.postService.uploadImage(blob);*/
+    this.images.push(new Blob([buffer], { type: 'image/jpeg' }));
+  }
 
-            const img = this.webView.convertFileSrc(imageData);
+  addTempImagen(image: string) {
+    const img = this.webView.convertFileSrc(image);
 
-            this.tempImages.push(img);
-        }, (err) => {
-            console.log(err);
-        });
-    }
-
+    const jetTempImg: JetTempImg = {
+      img,
+      progress: 0,
+      upload: false
+    };
+    this.tempImages.unshift(jetTempImg);
+  }
 }

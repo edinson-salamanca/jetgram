@@ -1,23 +1,23 @@
 <ion-header no-border translucent>
-    <ion-toolbar color="jetgram-header">
-        <ion-title class="ion-text-center" color="light">
-            <h1>JetGram</h1>
-        </ion-title>
-        <ion-icon name="camera" slot="start" size="large"></ion-icon>
-    </ion-toolbar>
+  <ion-toolbar color="jetgram-header">
+    <ion-title class="ion-text-center" color="light">
+      <h1>JetGram</h1>
+    </ion-title>
+    <ion-icon name="camera" slot="start" size="large"></ion-icon>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content *ngIf="!data[0]">
-    ningun post disponible
-    <ion-spinner name="crescent" class="spinner"></ion-spinner>
+  ningun post disponible
+  <ion-spinner name="crescent" class="spinner"></ion-spinner>
 </ion-content>
 
 <ion-content *ngIf="data[0]" color="light">
-    <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
-        <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
-    <app-posts [posts]="data"></app-posts>
-    <!--<div>
+  <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <app-posts [posts]="data"></app-posts>
+  <!--<div>
           <ion-card *ngFor="let post of data" class="post ion-no-margin">
               <ion-card-header>
                   <ion-item lines="none">
@@ -45,13 +45,12 @@
               </ion-card-content>
           </ion-card>
       </div>-->
-    <!--Infinite Scroll-->
-    <ion-infinite-scroll
-            [disabled]="!enabled"
-            threshold="150px"
-            (ionInfinite)="nextPost($event)">
-
-        <ion-infinite-scroll-content></ion-infinite-scroll-content>
-
-    </ion-infinite-scroll>
+  <!--Infinite Scroll-->
+  <ion-infinite-scroll
+    [disabled]="!enabled"
+    threshold="150px"
+    (ionInfinite)="nextPost($event)"
+  >
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
