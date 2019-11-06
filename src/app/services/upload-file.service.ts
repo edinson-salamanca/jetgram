@@ -6,40 +6,23 @@ import {
 } from '@angular/fire/storage';
 import { Observable, pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { UploadTaskSnapshot } from '@angular/fire/storage/interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadFileService {
-  private uploadState: Observable<string>;
-  private uploadProgress: Observable<number>;
-  private downloadURL: Observable<Promise<string>>;
-
   private ref: AngularFireStorageReference;
   private task: AngularFireUploadTask;
 
   constructor(private storage: AngularFireStorage) {}
 
-  uploadImage(img: Blob) {
+  uploadImage(img: Blob): Observable<UploadTaskSnapshot> {
     const id = new Date().getTime();
 
-    this.ref = this.storage.ref('posts/images').child(`${id}.jpeg`);
+    this.ref = this.storage.ref('/posts/').child(`imagenes/${id}.jpeg`);
     this.task = this.ref.put(img);
 
-    this.uploadProgress = this.task.percentageChanges();
-  }
-
-  getUploadProgress() {
-    return this.uploadProgress;
-  }
-
-  getUploadState() {
-    return this.task.task.on('state_changed', snapshot => {
-      console.log('state: ', snapshot.state);
-    });
-  }
-
-  async getDownloadURL() {
-    return await this.task.task.snapshot.ref.getDownloadURL();
+    return this.task.snapshotChanges();
   }
 }
