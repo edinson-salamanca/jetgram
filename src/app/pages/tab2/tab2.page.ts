@@ -46,66 +46,87 @@ export class Tab2Page {
 
     this.post.coords = '';
 
-    this.uploadImage();
     this.userService.getUser();
-    /* this.userService.getUser().subscribe(user => {
-            this.post.user = {
-                id: user.uid,
-                email: user.email,
-                name: user.displayName,
-                avatar: user.photoURL
-            };
-            const validCreatePost = this.postService.createPost(this.post);
+    console.log('crear', this.post);
 
-            if (validCreatePost) {
-                this.route.navigateByUrl('/main/tabs/tab1');
-                this.alertService.toastAlert('Post subido correctamente');
-            }
-            this.post = {
-                imgs: null,
-                message: '',
-                user: null,
-                created_at: '',
-                coords: ''
-            };
-        }); */
+    this.userService.getUser().subscribe(user => {
+      this.post.user = {
+        id: user.uid,
+        email: user.email,
+        name: user.displayName,
+        avatar: user.photoURL
+      };
+
+      const validCreatePost = this.postService.createPost(this.post);
+
+      if (validCreatePost) {
+        this.route.navigateByUrl('/main/tabs/tab1');
+        this.alertService.toastAlert('Post subido correctamente');
+      }
+
+      this.post = {
+        imgs: null,
+        message: '',
+        user: null,
+        created_at: '',
+        coords: ''
+      };
+    });
   }
   uploadImage() {
     const promises: Array<Promise<any>> = [];
 
     this.images.forEach((img, index) => {
-      promises.push(
-        new Promise(resolve => {
-          this.uploadFileService.uploadImage(img);
-
-          const progress = this.uploadFileService
-            .getUploadProgress()
-            .subscribe(resp => {
-              this.tempImages[index].progress = resp;
-
-              this.uploadFileService.getUploadProgress();
-
-              if (resp === 100) {
-                this.tempImages[index].upload = true;
-                resolve(this.uploadFileService.getDownloadURL());
-                progress.remove(progress);
-              }
-            });
-        })
-      );
+      promises.push(this.buildPromise(img, index));
     });
-    /* ejecutar promsesas del arreglo promises */
+
+    this.runPromises(promises);
+  }
+
+  /**
+   * ejecuta un areglo de promesas
+   * @param promises arreglo de promesas
+   */
+  private runPromises(promises: Array<Promise<any>>) {
     Promise.all(promises)
       .then(resp => {
+        console.log(resp);
+        const imgs: Array<string> = [];
+
         resp.forEach(url => {
-          this.post.imgs.push(url);
+          imgs.push(url);
         });
 
-        console.log(this.post);
+        this.post.imgs = imgs;
+        this.images = [];
+        this.tempImages = [];
+        this.createPost();
       })
       .catch(err => {
-        console.log('errorPromises: ', err);
+        console.log('errorPromises all:', err);
       });
+  }
+
+  /**
+   * construye una promesa
+   * @param img imagen a subir
+   * @param index posición actual de la imagen
+   * @returns una nueva promesa
+   */
+  private buildPromise(img: Blob, index: number): Promise<any> {
+    return new Promise(resolve => {
+      const upload = this.uploadFileService.uploadImage(img);
+      upload.subscribe(resp => {
+        const progress = (resp.bytesTransferred / resp.totalBytes) * 100;
+
+        this.tempImages[index].progress = progress;
+
+        if (progress === 100) {
+          this.tempImages[index].upload = true;
+          resolve(resp.ref.getDownloadURL());
+        }
+      });
+    });
   }
 
   takePhoto() {
