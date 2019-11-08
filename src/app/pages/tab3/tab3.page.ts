@@ -36,7 +36,7 @@ export class Tab3Page implements OnInit {
         if (fActualizar.invalid) {
             return;
         }
-        const valid = await this.userService.updateUser(this.user);
+        const valid = await this.userService.update(this.user);
         console.log('update', valid);
     }
 
