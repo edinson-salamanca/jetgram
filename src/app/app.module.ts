@@ -23,6 +23,9 @@ import {Camera} from '@ionic-native/camera/ngx';
 import {WebView} from '@ionic-native/ionic-webview/ngx';
 import {File} from '@ionic-native/file/ngx';
 
+/** Pipes */
+import {PipesModule} from './pipes/pipes.module';
+
 @NgModule({
     declarations: [AppComponent],
     entryComponents: [],
@@ -32,11 +35,11 @@ import {File} from '@ionic-native/file/ngx';
         AppRoutingModule,
         ComponentsModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
-        AngularFirestoreModule,
+        AngularFirestoreModule.enablePersistence(),
         AngularFireAuthModule,
-        AngularFirestoreModule,
         AngularFireStorageModule,
-        AngularFireDatabaseModule
+        AngularFireDatabaseModule,
+        PipesModule
     ],
     providers: [
         StatusBar,
