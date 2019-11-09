@@ -23,8 +23,7 @@ import {Camera} from '@ionic-native/camera/ngx';
 import {WebView} from '@ionic-native/ionic-webview/ngx';
 import {File} from '@ionic-native/file/ngx';
 
-/** Pipes */
-import {PipesModule} from './pipes/pipes.module';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
     declarations: [AppComponent],
@@ -39,7 +38,7 @@ import {PipesModule} from './pipes/pipes.module';
         AngularFireAuthModule,
         AngularFireStorageModule,
         AngularFireDatabaseModule,
-        PipesModule
+        FormsModule
     ],
     providers: [
         StatusBar,
