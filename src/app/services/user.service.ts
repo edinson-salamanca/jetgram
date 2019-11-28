@@ -3,6 +3,7 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {NavController} from '@ionic/angular';
 import {JetUser} from '../intefaces/interfaces';
 import {Observable} from 'rxjs';
+import {AngularFirestore} from '@angular/fire/firestore';
 
 
 @Injectable({
@@ -13,7 +14,8 @@ export class UserService {
 
     constructor(
         private firebaseAuth: AngularFireAuth,
-        private navCtrl: NavController
+        private navCtrl: NavController,
+        private db: AngularFirestore
     ) {
         this.user = this.firebaseAuth.authState;
     }
@@ -27,21 +29,36 @@ export class UserService {
         });
     }
 
-    singUp(user: JetUser) {
+    singUp(jetUser: JetUser) {
         this.firebaseAuth.auth.useDeviceLanguage();
 
         return new Promise((resolve, reject) => {
             this.firebaseAuth.auth
-                .createUserWithEmailAndPassword(user.email, user.password)
+                .createUserWithEmailAndPassword(jetUser.email, jetUser.password)
                 .then(resp => {
-                    resp.user.updateProfile({
-                        displayName: user.name,
-                        photoURL: user.avatar
+                    const userFirebase: firebase.User = resp.user;
+
+                    userFirebase.updateProfile({
+                        displayName: jetUser.name,
+                        photoURL: jetUser.avatar,
                     });
+
+
+                    jetUser.id = userFirebase.uid;
+                    jetUser.password = '';
+
+                    this.createUser(jetUser);
+
                     resolve(true);
+
                 })
                 .catch(err => reject(err));
         });
+    }
+
+    async createUser(jetUser: JetUser) {
+
+        await this.db.collection('users').add(jetUser);
     }
 
     getUser() {

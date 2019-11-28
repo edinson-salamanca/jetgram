@@ -7,7 +7,7 @@
 <ion-slide>
   <ion-grid fixed>
     <app-avatar-selector
-      (avatarSel)="registerUser.avatar = $event"
+      (avatarSel)="registUser.avatar = $event"
     ></app-avatar-selector>
     <form (submit)="registerUser(fRegistro)" #fRegistro="ngForm">
       <ion-row>

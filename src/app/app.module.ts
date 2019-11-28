@@ -12,6 +12,7 @@ import {AppComponent} from './app.component';
 import {ComponentsModule} from './components/components.module';
 import {environment} from '../environments/environment';
 
+
 /** Firebase */
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireStorageModule} from '@angular/fire/storage';
@@ -35,6 +36,7 @@ import {File} from '@ionic-native/file/ngx';
         AngularFirestoreModule.enablePersistence(),
         AngularFireAuthModule,
         AngularFireStorageModule,
+
     ],
     providers: [
         StatusBar,

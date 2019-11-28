@@ -116,4 +116,5 @@
             necesita acceso para guardar fotos
         </string>
     </edit-config>
+    <allow-navigation href="http://localhost:8100" sessionid="fa1231fd" />
 </widget>

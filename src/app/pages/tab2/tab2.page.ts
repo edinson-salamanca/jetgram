@@ -14,7 +14,7 @@ import * as moment from 'moment';
 import {Camera, CameraOptions} from '@ionic-native/camera/ngx';
 import {WebView} from '@ionic-native/ionic-webview/ngx';
 import {Platform} from '@ionic/angular';
-import {map} from 'rxjs/operators';
+
 
 @Component({
     selector: 'app-tab2',
@@ -92,13 +92,11 @@ export class Tab2Page {
     private runPromises(promises: Array<Promise<any>>) {
         Promise.all(promises)
             .then(resp => {
-
+                const imgs: Array<string> = [];
                 resp.forEach(url => {
                     imgs.push(url);
                 });
 
-
-                const imgs: Array<string> = [];
 
                 this.post.imgs = imgs;
                 this.images = [];
@@ -119,7 +117,9 @@ export class Tab2Page {
      */
     private buildPromise(img: Blob, index: number): Promise<any> {
         return new Promise(resolve => {
+
             const upload = this.uploadFileService.uploadImage(img);
+
             upload.subscribe(resp => {
                 const progress = (resp.bytesTransferred / resp.totalBytes) * 100;
 
@@ -129,6 +129,8 @@ export class Tab2Page {
                     this.tempImages[index].upload = true;
                     resolve(resp.ref.getDownloadURL());
                 }
+            }, error => {
+                console.log('error en en promesa: ', error);
             });
         });
     }

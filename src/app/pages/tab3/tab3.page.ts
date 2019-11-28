@@ -14,15 +14,15 @@ import {Observable} from 'rxjs';
 })
 export class Tab3Page implements OnInit {
     user: JetUser = {};
-    userFirabe: Observable<firebase.User>;
+    userFirebase: Observable<firebase.User>;
 
     constructor(private userService: UserService) {
     }
 
     ngOnInit() {
 
-        this.userFirabe = this.userService.getUser();
-        this.userFirabe.subscribe(userAuth => {
+        this.userFirebase = this.userService.getUser();
+        this.userFirebase.subscribe(userAuth => {
             if (userAuth) {
                 this.user.id = userAuth.uid;
                 this.user.email = userAuth.email;

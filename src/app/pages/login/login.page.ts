@@ -43,7 +43,7 @@ export class LoginPage implements OnInit {
 
     async login(fLogin: NgForm) {
         if (fLogin.invalid) {
-            await this.alertsService.alertInformative('Hay campos vacíos');
+            await this.alertsService.alertInformative('Hay campos vacios');
             return;
         }
         await this.loadingService.startLoading('Espere por favor');
@@ -71,12 +71,33 @@ export class LoginPage implements OnInit {
             await this.userService.singUp(this.registerUser);
             await this.navCtrl.navigateRoot('/main/tabs/tab1', {animated: true});
             await this.alertsService.toastAlert('Bienvenido');
+
         } catch (e) {
-            await this.alertsService.alertInformative(e.message);
+            switch (e.code) {
+                case 'auth/email-already-exists': {
+                    this.alertInfo('Email ingresado ya lo esta usando otra persona');
+                    break;
+                }
+                case 'auth/invalid-email': {
+                    this.alertInfo('Email ingresado no es valido');
+                    break;
+                }
+                case '"auth/weak-password': {
+                    this.alertInfo('La contraseña debe tener como mínimo seis caracteres');
+                    break;
+                }
+                default: {
+                    this.alertInfo('Algo salio mal intentalo otra vez');
+                    break;
+                }
+            }
         }
         await this.loadingService.stopLoading();
     }
 
+    async alertInfo(message: string) {
+        await this.alertsService.alertInformative(message);
+    }
 
     async mostrarRegistro() {
         await this.slides.lockSwipes(false);

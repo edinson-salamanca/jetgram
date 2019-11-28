@@ -4,7 +4,6 @@ import {
     AngularFirestoreCollection
 } from '@angular/fire/firestore';
 
-import {Observable} from 'rxjs';
 import {JetPost} from '../intefaces/interfaces';
 import {map} from 'rxjs/operators';
 
