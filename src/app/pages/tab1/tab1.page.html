@@ -1,11 +1,11 @@
-<ion-header no-border translucent >
-    <ion-toolbar color="jetgram-header">
-        <ion-title class="ion-text-center" color="light">
-            <h1>JetGram</h1>
-        </ion-title>
-        <ion-icon name="camera" slot="start" size="large"></ion-icon>
-    </ion-toolbar>
-</ion-header>
+    <ion-header no-border translucent>
+        <ion-toolbar color="jetgram-header">
+            <ion-title class="ion-text-center" color="light">
+                <h1>JetGram</h1>
+            </ion-title>
+            <ion-icon name="camera" slot="start" size="large"></ion-icon>
+        </ion-toolbar>
+    </ion-header>
 
 <ng-container *ngIf="!data[0]">
     <div *ngFor="let n of [0,1,2,3,4]" class="ion-padding">
@@ -17,9 +17,9 @@
 </ng-container>
 
 <ion-content color="light">
-    <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+    <!--<ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
         <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
+    </ion-refresher>-->
     <app-posts [posts]="data"></app-posts>
     <!--<div>
             <ion-card *ngFor="let post of data" class="post ion-no-margin">

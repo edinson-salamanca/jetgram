@@ -45,10 +45,10 @@
                         [ngClass]="{'ion-color-success': image.upload,
                                     'ion-color-tertiary': !image.upload
                                    }"
-                        [value]="image.progress / 100">
+                        [value]="progress(image.progress)">
 
                 </ion-progress-bar>
-                <ion-badge color="dark">{{image.progress}}</ion-badge>
+                <ion-badge color="dark">{{image.progress.toFixed(2)}}</ion-badge>
             </ion-item>
         </ion-list>
     </ion-grid>

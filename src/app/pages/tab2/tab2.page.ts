@@ -125,6 +125,7 @@ export class Tab2Page {
 
                 this.tempImages[index].progress = progress;
 
+
                 if (progress === 100) {
                     this.tempImages[index].upload = true;
                     resolve(resp.ref.getDownloadURL());
@@ -197,5 +198,10 @@ export class Tab2Page {
             upload: false
         };
         this.tempImages.unshift(jetTempImg);
+    }
+
+    progress(state: number) {
+        const advance = state / 100;
+        return advance;
     }
 }

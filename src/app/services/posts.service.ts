@@ -1,7 +1,7 @@
 import {Injectable, EventEmitter} from '@angular/core';
 import {
     AngularFirestore,
-    AngularFirestoreCollection
+    AngularFirestoreCollection,
 } from '@angular/fire/firestore';
 
 import {JetPost} from '../intefaces/interfaces';

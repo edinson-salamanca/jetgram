@@ -1,83 +1,83 @@
-import {Component, OnInit} from '@angular/core';
-import {PostsService} from '../../services/posts.service';
-import {JetPost} from '../../intefaces/interfaces';
-import {Observable, Subscription} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { PostsService } from '../../services/posts.service';
+import { JetPost } from '../../intefaces/interfaces';
+import { Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
-    selector: 'app-tab1',
-    templateUrl: 'tab1.page.html',
-    styleUrls: ['tab1.page.scss']
+  selector: 'app-tab1',
+  templateUrl: 'tab1.page.html',
+  styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page implements OnInit {
-    posts = {
-        user: {
-            name: 'Ruben Elias',
-            email: 'ruben@gmail.com',
-            avatar: {
-                url: '/assets/avatars/av-1.png'
-            }
-        },
-        photo: {
-            url: '/assets/perro-2.jpg'
-        }
-    };
-    data: Array<JetPost> = [];
-    spinner = true; // true spinner activo false desactivo
-
-    enabled: boolean; // infinite scroll
-
-    private nexPost: Subscription;
-
-    constructor(private postService: PostsService) {
-        this.spinner = true;
-
-        this.enabled = true;
+  posts = {
+    user: {
+      name: 'Ruben Elias',
+      email: 'ruben@gmail.com',
+      avatar: {
+        url: '/assets/avatars/av-1.png'
+      }
+    },
+    photo: {
+      url: '/assets/perro-2.jpg'
     }
+  };
+  data: Array<JetPost> = [];
+  spinner = true; // true spinner activo false desactivo
 
-    ngOnInit() {
-        this.getPosts();
+  enabled: boolean; // infinite scroll
 
-        /*escucha emit de newPost*/
-        /*this.postService.newPost.subscribe(post => {
+  private nexPost: Subscription;
+
+  constructor(private postService: PostsService) {
+    this.spinner = true;
+
+    this.enabled = true;
+  }
+
+  ngOnInit() {
+    this.getPosts();
+
+    /*escucha emit de newPost*/
+    /*this.postService.newPost.subscribe(post => {
             // this.data.unshift(post);
         });*/
 
-        /*data.subscribe(user => {
+    /*data.subscribe(user => {
                 user.map(snap => {
                     this.data.unshift(snap.payload.doc.data());
                 });
             });*/
-    }
+  }
 
-    nextPost(event?, pull: boolean = false) {
-        /* this.postService.getPostNext(this.data); */
+  nextPost(event?, pull: boolean = false) {
+    /* this.postService.getPostNext(this.data); */
 
-        this.nexPost = this.postService
-            .getPostsNext(...this.data)
-            .subscribe(posts => {
-                this.data.push(...posts);
-                event.target.complete();
+    this.nexPost = this.postService
+      .getPostsNext(...this.data)
+      .subscribe(posts => {
+        this.data.push(...posts);
+        event.target.complete();
 
-                if (posts.length === 0) {
-                    this.enabled = false;
-                }
+        if (posts.length === 0) {
+          this.enabled = false;
+        }
 
-                this.nexPost.unsubscribe();
-            });
-    }
+        this.nexPost.unsubscribe();
+      });
+  }
 
-    getPosts(event?) {
-        this.postService.getPosts().subscribe(posts => {
-            this.data = [];
-            console.log('getPost', this.data);
-            this.data = posts;
+  getPosts(event?) {
+    this.postService.getPosts().subscribe(posts => {
+      this.data = [];
+      console.log('getPost', this.data);
+      this.data = posts;
 
-            this.enabled = true;
-        });
-    }
+      this.enabled = true;
+    });
+  }
 
-    recargar(event) {
-        console.log(event);
-    }
+  recargar(event) {
+    console.log(event);
+  }
 }

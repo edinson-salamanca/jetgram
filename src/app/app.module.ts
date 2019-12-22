@@ -11,8 +11,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {ComponentsModule} from './components/components.module';
 import {environment} from '../environments/environment';
-
-
 /** Firebase */
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireStorageModule} from '@angular/fire/storage';
@@ -22,6 +20,7 @@ import {AngularFireModule} from '@angular/fire';
 import {Camera} from '@ionic-native/camera/ngx';
 import {WebView} from '@ionic-native/ionic-webview/ngx';
 import {File} from '@ionic-native/file/ngx';
+import {ScreenOrientation} from '@ionic-native/screen-orientation/ngx';
 
 
 @NgModule({
@@ -37,6 +36,7 @@ import {File} from '@ionic-native/file/ngx';
         AngularFireAuthModule,
         AngularFireStorageModule,
 
+
     ],
     providers: [
         StatusBar,
@@ -44,6 +44,7 @@ import {File} from '@ionic-native/file/ngx';
         Camera,
         WebView,
         File,
+        ScreenOrientation,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
     ],
     bootstrap: [AppComponent]
